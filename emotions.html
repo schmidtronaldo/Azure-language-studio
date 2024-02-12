@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reconhecimento de Emoções</title>
+</head>
+<body>
+  <textarea id="textInput" rows="4" cols="50"></textarea>
+  <button onclick="analyzeEmotion()">Analisar Emoção</button>
+  <div id="output"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sentiment/6.0.1/sentiment.min.js"></script>
+  <script>
+    function analyzeEmotion() {
+      const text = document.getElementById('textInput').value;
+      const sentiment = new Sentiment();
+      const result = sentiment.analyze(text);
+      const outputDiv = document.getElementById('output');
+      
+      let emotion = '';
+      if (result.score > 0) {
+        emotion = 'positiva';
+      } else if (result.score < 0) {
+        emotion = 'negativa';
+      } else {
+        emotion = 'neutra';
+      }
+
+      outputDiv.innerHTML = `A emoção do texto é ${emotion}. Pontuação: ${result.score}`;
+    }
+  </script>
+</body>
+</html>

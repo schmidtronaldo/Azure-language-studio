@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reconhecimento de Texto</title>
+</head>
+<body>
+  <input type="file" id="fileInput" accept="image/*">
+  <div id="output"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2.3.0/dist/tesseract.js"></script>
+  <script>
+    document.getElementById('fileInput').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const image = new Image();
+        image.src = event.target.result;
+        image.onload = function() {
+          recognizeText(image);
+        };
+      };
+      reader.readAsDataURL(file);
+    });
+
+    function recognizeText(image) {
+      Tesseract.recognize(
+        image,
+        'eng', // Language
+        { logger: m => console.log(m) } // Logger function to show progress
+      ).then(({ data: { text } }) => {
+        document.getElementById('output').textContent = text;
+      });
+    }
+  </script>
+</body>
+</html>
